@@ -12,7 +12,7 @@ declare(strict_types=1);
  *   php read.php 192.168.100.114
  */
 
-require __DIR__ . '/gt7telemetry.php';
+require __DIR__ . '/../lib/gt7telemetry.php';
 
 const SEND_PORT = 33739;
 const RECV_PORT = 33740;

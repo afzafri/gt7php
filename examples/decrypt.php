@@ -13,7 +13,7 @@ declare(strict_types=1);
  *   php decrypt.php 192.168.100.114
  */
 
-require __DIR__ . '/salsa20.php';
+require __DIR__ . '/../lib/salsa20.php';
 
 const SEND_PORT = 33739;
 const RECV_PORT = 33740;
