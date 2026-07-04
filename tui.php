@@ -13,6 +13,7 @@ declare(strict_types=1);
  */
 
 require __DIR__ . '/lib/gt7telemetry.php';
+require __DIR__ . '/lib/cars.php';
 
 const SEND_PORT = 33739;
 const RECV_PORT = 33740;
@@ -110,6 +111,9 @@ function render(?array $t, string $status): string
 
     // car name (falls back to a raw id until the car list is scraped)
     $car = $t['car_name'] ?? ('Car #' . ($t['car_id'] ?? '?'));
+    if (mb_strwidth($car) > INNER_W - 2) {
+        $car = mb_strimwidth($car, 0, INNER_W - 2, '...');
+    }
     $out .= row('  ' . BOLD . C_WHT . $car . RESET);
     $out .= row('');
 
@@ -188,6 +192,10 @@ while (true) {
         $plain = gt7_decrypt($buf);
         if ($plain !== '') {
             $state = gt7_parse($plain);
+            $name = gt7_car_name($state['car_id']);
+            if ($name !== null) {
+                $state['car_name'] = $name;
+            }
             $lastPacketTime = microtime(true);
             if (++$packets > 100) {
                 $sendHeartbeat();
