@@ -40,6 +40,17 @@ The `examples/` folder has smaller scripts, in order of how much they do:
 | `php examples/read.php <ip>` | dumps every parsed field once |
 | `php tui.php <ip>` | the live cockpit |
 
+## Car names
+
+Telemetry only carries a numeric car id. Run the scraper the first time you set
+up gt7php, and again whenever GT7 adds new cars, to build `data/cars.json`:
+
+```
+php tools/scrape-cars.php
+```
+
+Without it the cockpit just shows `Car #<id>`.
+
 ## How it works
 
 GT7 streams telemetry over UDP. Send a heartbeat byte to port 33739 and the
