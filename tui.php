@@ -54,8 +54,10 @@ function bar(float $frac, int $width, string $color): string
 {
     $frac = max(0.0, min(1.0, $frac));
     $fill = (int) round($frac * $width);
+    // Empty segments reuse the full block in grey so every cell is the same
+    // glyph width (shade chars like ░ trigger font fallback and misalign).
     return $color . str_repeat('█', $fill)
-        . C_GRY . str_repeat('░', $width - $fill) . RESET;
+        . C_GRY . str_repeat('█', $width - $fill) . RESET;
 }
 
 // ── terminal setup / teardown ──────────────────────────────────────────────
@@ -97,7 +99,7 @@ function render(?array $t, string $status): string
 
     if ($t === null) {
         $out .= row('');
-        $out .= row('  ' . DIM . 'waiting for telemetry…' . RESET);
+        $out .= row('  ' . DIM . 'waiting for telemetry...' . RESET);
         $out .= row('');
         for ($i = 0; $i < 9; $i++) {
             $out .= row('');
@@ -126,9 +128,9 @@ function render(?array $t, string $status): string
     $out .= row('');
     $out .= row(sprintf('  %sBOOST%s %+.2f bar     %sFUEL%s %.1f / %.1f',
         DIM, RESET, $t['boost'], DIM, RESET, $t['current_fuel'], $t['fuel_capacity']));
-    $out .= row(sprintf('  %sWATER%s %.0f°C    %sOIL%s %.0f°C',
+    $out .= row(sprintf('  %sWATER%s %.0fC    %sOIL%s %.0fC',
         DIM, RESET, $t['water_temp'], DIM, RESET, $t['oil_temp']));
-    $out .= row(sprintf('  %sTYRE%s  FL %2.0f  FR %2.0f  RL %2.0f  RR %2.0f °C',
+    $out .= row(sprintf('  %sTYRE%s  FL %2.0f  FR %2.0f  RL %2.0f  RR %2.0f C',
         DIM, RESET, $t['tyre_temp_fl'], $t['tyre_temp_fr'], $t['tyre_temp_rl'], $t['tyre_temp_rr']));
     $out .= row('');
     $out .= row(sprintf('  %sLAP%s %s/%s   %sLAST%s %s   %sBEST%s %s',
