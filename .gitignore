@@ -1,0 +1,14 @@
+# PHP / Composer
+/vendor/
+composer.lock
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
