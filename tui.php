@@ -101,12 +101,17 @@ function render(?array $t, string $status): string
         $out .= row('');
         $out .= row('  ' . DIM . 'waiting for telemetry...' . RESET);
         $out .= row('');
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < 11; $i++) {
             $out .= row('');
         }
         $out .= $bot;
         return $out;
     }
+
+    // car name (falls back to a raw id until the car list is scraped)
+    $car = $t['car_name'] ?? ('Car #' . ($t['car_id'] ?? '?'));
+    $out .= row('  ' . BOLD . C_WHT . $car . RESET);
+    $out .= row('');
 
     $limiter = max(1, $t['rpm_rev_limiter']);
     $warn    = $t['rpm_rev_warning'] > 0 ? $t['rpm_rev_warning'] : (int) ($limiter * 0.9);
